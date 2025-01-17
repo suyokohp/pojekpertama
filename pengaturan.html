@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pengaturan</title>
+    <link rel="stylesheet" href="Pengaturan.css">
+</head>
+<body>
+    <div class="wrapper">
+        <aside class="sidebar">
+            <h2>Pengaturan</h2>
+            <nav>
+                <ul>
+                    <li><a href="#akun">Pengaturan Akun</a></li>
+                    <li><a href="#tema">Pengaturan Tema</a></li>
+                    <li><a href="#notifikasi">Pengaturan Notifikasi</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="header">
+                <h1>Halaman Pengaturan</h1>
+            </header>
+
+            <section id="akun" class="settings-section">
+                <h2>Pengaturan Akun</h2>
+                <form class="settings-form">
+                    <label for="username">Nama Pengguna</label>
+                    <input type="text" id="username" name="username" placeholder="Masukkan nama pengguna">
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Masukkan email">
+
+                    <button type="submit">Simpan Perubahan</button>
+                </form>
+            </section>
+
+            <section id="tema" class="settings-section">
+                <h2>Pengaturan Tema</h2>
+                <form class="settings-form">
+                    <label for="theme">Pilih Tema</label>
+                    <select id="theme" name="theme">
+                        <option value="light">Terang</option>
+                        <option value="dark">Gelap</option>
+                    </select>
+
+                    <button type="submit">Terapkan Tema</button>
+                </form>
+            </section>
+
+            <section id="notifikasi" class="settings-section">
+                <h2>Pengaturan Notifikasi</h2>
+                <form class="settings-form">
+                    <label>
+                        <input type="checkbox" name="email_notifications">
+                        Notifikasi Email
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="sms_notifications">
+                        Notifikasi SMS
+                    </label>
+
+                    <button type="submit">Simpan Pengaturan</button>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

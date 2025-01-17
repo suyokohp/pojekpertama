@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pengguna</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Data Pengguna</h1>
+        <a href="dashboard.html" class="back-btn">Kembali ke Dashboard</a>
+    </header>
+    <main class="content">
+        <h2>Daftar Pengguna</h2>
+        <button id="add-user-btn" class="add-btn">Tambah Pengguna</button>
+        <table id="user-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- Modal Tambah/Edit -->
+    <div id="user-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="modal-title">Tambah Pengguna</h3>
+        <form id="user-form">
+            <div class="form-group">
+                <label for="name">Nama Lengkap:</label>
+                <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Masukkan email" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Peran:</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Pilih peran</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                    <option value="editor">Editor</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-save">Simpan</button>
+                <button type="button" id="close-modal-btn" class="btn btn-cancel">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script>
+	// Periksa status login
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn !== "true") {
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = "login.html";
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+		const userTableBody = document.querySelector("#user-table tbody");
+    const addUserBtn = document.getElementById("add-user-btn");
+    const userModal = document.getElementById("user-modal");
+    const userForm = document.getElementById("user-form");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+    const modalTitle = document.getElementById("modal-title");
+
+    let users = [];
+    let editingIndex = null;
+
+    const openModal = (isEdit = false, user = null) => {
+        userModal.classList.remove("hidden");
+        modalTitle.textContent = isEdit ? "Edit Pengguna" : "Tambah Pengguna";
+        if (isEdit && user) {
+            userForm.name.value = user.name;
+            userForm.email.value = user.email;
+        } else {
+            userForm.reset();
+        }
+    };
+
+    const closeModal = () => {
+        userModal.classList.add("hidden");
+        editingIndex = null;
+    };
+
+    const renderTable = () => {
+        userTableBody.innerHTML = "";
+        users.forEach((user, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>
+                    <button class="edit-btn" data-index="${index}">Edit</button>
+                    <button class="delete-btn" data-index="${index}">Hapus</button>
+                </td>
+            `;
+            userTableBody.appendChild(row);
+        });
+
+        // Tambahkan event untuk tombol Edit dan Hapus
+        document.querySelectorAll(".edit-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                editingIndex = e.target.dataset.index;
+                openModal(true, users[editingIndex]);
+            });
+        });
+
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const index = e.target.dataset.index;
+                users.splice(index, 1);
+                renderTable();
+            });
+        });
+    };
+
+    // Event untuk tombol Tambah Pengguna
+    addUserBtn.addEventListener("click", () => {
+        openModal(false);
+    });
+
+    // Event untuk form Tambah/Edit Pengguna
+    userForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = userForm.name.value;
+        const email = userForm.email.value;
+
+        if (editingIndex !== null) {
+            users[editingIndex] = { name, email };
+        } else {
+            users.push({ name, email });
+        }
+
+        renderTable();
+        closeModal();
+    });
+
+    // Event untuk tombol Batal di modal
+    closeModalBtn.addEventListener("click", closeModal);
+
+    // Inisialisasi tabel
+    renderTable();
+});
+    </script>
+</body>
+</html>

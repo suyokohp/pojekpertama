@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button id="toggle-sidebar" class="toggle-btn">☰</button>
+		<button id="logout-btn" class="toggle-btn">Logout</button>
+        
+    </header>
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="Data-Pengguna.html">Data Pengguna</a></li>
+                <li><a href="Laporan.html">Laporan</a></li>
+                <li><a href="#">Pengaturan</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <h2>Selamat Datang</h2>
+            <p>Ini adalah tampilan awal aplikasi sistem informasi Anda.</p>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2025 Sistem Informasi. All rights reserved.</p>
+    </footer>
+    <script>
+        // Periksa status login
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn !== "true") {
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = "login.html";
+        }
+		document.addEventListener("DOMContentLoaded", () => {
+		const toggleButton = document.getElementById("toggle-sidebar");
+		const sidebar = document.getElementById("sidebar");
+			toggleButton.addEventListener("click", () => {
+			sidebar.classList.toggle("hidden");
+		});
+		});
+		
+        // Tombol Logout
+        const logoutButton = document.getElementById("logout-btn");
+        logoutButton.addEventListener("click", () => {
+            // Hapus status login dari local storage
+            localStorage.removeItem("isLoggedIn");
+            // Redirect ke halaman login
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>

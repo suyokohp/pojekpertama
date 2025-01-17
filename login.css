@@ -1,0 +1,96 @@
+/* Body dan background */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Kontainer form login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Box form login */
+.login-box {
+    background-color: white;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+/* Grup form input */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Tombol login */
+.btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsivitas untuk ukuran layar kecil */
+@media (max-width: 480px) {
+    .login-box {
+        width: 80%;
+        padding: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .form-group input {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+    }
+}
+

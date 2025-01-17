@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan</title>
+    <link rel="stylesheet" href="Laporan.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>Laporan Pengguna</h1>
+        </div>
+        <nav class="nav">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="settings.html" class="nav-link">Pengaturan</a>
+			<button><a href="dashboard.html" class="nav-link">Kembali</a></button>			
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="report-section">
+            <h2>Filter Laporan</h2>
+            <form id="report-filter-form" class="report-filter">
+                <div class="form-group">
+                    <label for="start-date">Tanggal Mulai:</label>
+                    <input type="date" id="start-date" name="start-date">
+                </div>
+                <div class="form-group">
+                    <label for="end-date">Tanggal Selesai:</label>
+                    <input type="date" id="end-date" name="end-date">
+                </div>
+                <div class="form-group">
+                    <label for="role">Peran:</label>
+                    <select id="role" name="role">
+                        <option value="" disabled selected>Pilih Peran</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-filter">Filter Laporan</button>
+            </form>
+
+            <h2>Tabel Laporan</h2>
+            <table id="report-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Peran</th>
+                        <th>Tanggal Bergabung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data laporan akan dimasukkan di sini -->
+                </tbody>
+            </table>
+
+            <button id="download-report" class="btn btn-download">Unduh Laporan</button>
+        </section>
+    </main>
+
+    <script>
+	// Periksa status login
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn !== "true") {
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = "login.html";
+			}
+	//inputan
+	document.addEventListener("DOMContentLoaded", () => {
+    const filterForm = document.getElementById("report-filter-form");
+    const reportTableBody = document.querySelector("#report-table tbody");
+    const downloadButton = document.getElementById("download-report");
+
+    const users = [
+        { name: "John Doe", email: "john.doe@example.com", role: "admin", joinedDate: "2023-01-15" },
+        { name: "Jane Smith", email: "jane.smith@example.com", role: "user", joinedDate: "2022-11-12" },
+        { name: "Albert Einstein", email: "albert@example.com", role: "editor", joinedDate: "2021-05-30" },
+        // Data lainnya
+    ];
+
+    // Fungsi untuk menampilkan tabel laporan
+    const renderTable = (filteredData) => {
+        reportTableBody.innerHTML = "";
+        filteredData.forEach((user, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>${user.joinedDate}</td>
+            `;
+            reportTableBody.appendChild(row);
+        });
+    };
+
+    // Menangani form filter
+    filterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const startDate = filterForm["start-date"].value;
+        const endDate = filterForm["end-date"].value;
+        const role = filterForm["role"].value;
+
+        let filteredUsers = users;
+
+        if (startDate) {
+            filteredUsers = filteredUsers.filter(user => user.joinedDate >= startDate);
+        }
+
+        if (endDate) {
+            filteredUsers = filteredUsers.filter(user => user.joinedDate <= endDate);
+        }
+
+        if (role) {
+            filteredUsers = filteredUsers.filter(user => user.role === role);
+        }
+
+        renderTable(filteredUsers);
+    });
+
+    // Menangani tombol Unduh Laporan
+    downloadButton.addEventListener("click", () => {
+        const data = users.map(user => ({
+            Name: user.name,
+            Email: user.email,
+            Role: user.role,
+            "Joined Date": user.joinedDate,
+        }));
+
+        // Mengubah data menjadi format CSV untuk diunduh
+        const csv = convertToCSV(data);
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "laporan_pengguna.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+
+    // Fungsi untuk mengonversi data ke format CSV
+    const convertToCSV = (data) => {
+        const header = Object.keys(data[0]).join(",") + "\n";
+        const rows = data.map(row => Object.values(row).join(",")).join("\n");
+        return header + rows;
+    };
+
+    renderTable(users);  // Menampilkan tabel dengan data awal
+});
+	</script>
+</body>
+</html>
